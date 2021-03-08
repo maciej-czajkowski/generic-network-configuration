@@ -1,26 +1,42 @@
 
 import argparse
 import json
-
-
+import ciscoConfigParser as ccp
+import configurationTranslator as ct
+ 
 
 # --- parsing input arguments
-parser = argparse.ArgumentParser( description='Scripts parses CISCO configuration file.' )
-parser.add_argument( "-p", "--path", nargs=1, required=True, help="path to CISCO configuration file" )
+cli = argparse.ArgumentParser(description='Scripts parses CISCO configuration file.')
+cli.add_argument("-p", "--path", nargs=1, required=True, help="path to CISCO configuration file")
 
 # if __name__ == "__main__":
-args = parser.parse_args()
+
+# -- getting filename
+args = cli.parse_args()
 filePath = args.path[0]
 
-# --- opening file
-file = open( filePath, "r" )
+# --- creating config parser object
+# --- it will parse the config into list of lists (every entry in the list is a list which containt every line between ! in config)
+parser = ccp.ciscoConfigParser()
+parser.parseConfig(filePath)
 
-config = file.readlines()
+# --- uncomment to see the content of the parsed config
+# print(parser.config)
 
-print(config)
+# --- here we begin to translate the parsed config into a generic one
+translator = ct.ciscoGenericTranslator()
+# --- this class method will return Json dictionary base string
+parsedData = ct.configurationTranslator().parseCisco2GenericJson(parser.config)
 
-example_dict = {'name': "cisco", 'number': 2}
+# print(parsedData)
+# for line in parser.config:
+#     for entry in line:
+#         for key in translator.dictionary.keys():
+#             if entry.startswith(key):
+#                 parsedData[key] = entry.replace(key, "")
 
-result = json.dumps(example_dict, indent=3)
-print(result)
+# --- we create a json string
+genericJson = json.dumps(parsedData, indent=4)
 
+outputFile = open("exampleOutput.json", 'w')
+outputFile.write(genericJson)
