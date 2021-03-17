@@ -38,16 +38,16 @@ class CiscoConfig:
                 line = next(i)
                 if indent == (len(line) - len(line.lstrip('\t')) - 1):
                     parent = parent.childs[-1]
-                    node = Node(line)
+                    node = Node(line.lstrip('\t'))
                     node.parent = parent
                     indent = indent +1
                 elif indent == (len(line) - len(line.lstrip('\t')) + 1):
                     parent = parent.parent
-                    node = Node(line)
+                    node = Node(line.lstrip('\t'))
                     node.parent = parent
                     indent = indent -1
                 else:
-                    node = Node(line)
+                    node = Node(line.lstrip('\t'))
                     node.parent = parent
 
                 if parent == root:
@@ -66,7 +66,7 @@ class CiscoConfig:
         parsed_config = []
         for line in config:
             entry = line.replace("\n","")
-            if entry != "!":
+            if "!" not in entry:
                 parsed_config.append(entry)
         return parsed_config
 
@@ -79,7 +79,7 @@ class CiscoConfig:
         #         self.config.remove("!")
         #     except ValueError:
         #         break;
-        print(self.config)
+        # print(self.config)
         # i = iter(self.config)
         # indent = 0
         # while True:
@@ -102,3 +102,6 @@ class CiscoConfig:
         #         break
 
 config = CiscoConfig("test.cfg")
+
+for item in config.nodes:
+    print (repr(item))
