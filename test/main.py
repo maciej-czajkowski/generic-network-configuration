@@ -1,7 +1,9 @@
-from netconfparsers import CiscoConfigParser
+from netconfparsers import JuniperConfigParser
 from anytree import RenderTree, AsciiStyle
 
 
-config = CiscoConfigParser("ciscoexample.txt")
+config = JuniperConfigParser("juniperexample.txt")
+
+
 root = config.parse()
 print(RenderTree(root, style=AsciiStyle()).by_attr())

@@ -48,3 +48,37 @@ class CiscoConfigParser(ConfigParser):
             except StopIteration:
                 break
         return self.root
+
+
+''' class responsible for parsing juniper network configuration into a node tree'''
+class JuniperConfigParser(ConfigParser):
+    nodes = []
+    interfaces = []
+    root = None
+    config = None
+    COMMENT_REGEX = re.compile(".*[##]")
+    def __init__(self, filename):
+        self.filename = filename
+        self.fd = open(filename, "r")
+        self.config = self.fd.readlines()
+        self.root = Node("root")
+
+    def parse(self):
+        i = iter(self.config)
+        parent = self.root
+        while True:
+            try:
+                line = next(i)
+                if self.COMMENT_REGEX.search(line):
+                    line = line.partition("##")[0]
+                line = line.rstrip(" ;\n").lstrip(" ")
+                if line == "}":
+                    parent = parent.parent
+                    continue
+                if line.endswith("{"):
+                    parent = parent.children[-1]
+                    line = line.rstrip(" {")
+                Node(line, parent=parent)
+            except StopIteration:
+                break
+        return self.root
