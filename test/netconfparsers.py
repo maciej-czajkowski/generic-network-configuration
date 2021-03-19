@@ -35,16 +35,16 @@ class CiscoConfigParser(ConfigParser):
                 line = next(i).rstrip('\n')
                 if self.COMMENT_REGEX.search(line):
                     continue
-                if indent == (len(line) - len(line.lstrip('\t')) - 1):
+                if indent == (len(line) - len(line.lstrip(' ')) - 1):
                     parent = parent.children[-1]
-                    Node(line.lstrip('\t'), parent=parent)
+                    Node(line.lstrip(' '), parent=parent)
                     indent = indent + 1
-                elif indent == (len(line) - len(line.lstrip('\t')) + 1):
+                elif indent == (len(line) - len(line.lstrip(' ')) + 1):
                     parent = parent.parent
-                    Node(line.lstrip('\t'), parent=parent)
+                    Node(line.lstrip(' '), parent=parent)
                     indent = indent - 1
                 else:
-                    Node(line.lstrip('\t'), parent=parent)
+                    Node(line.lstrip(' '), parent=parent)
             except StopIteration:
                 break
         return self.root
