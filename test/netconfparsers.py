@@ -1,16 +1,18 @@
-from anytree import Node, RenderTree, AsciiStyle, findall, find
+from anytree import Node
 import re
 
-''' @netconfparsers '''
+""" @netconfparsers """
 
-''' interface for all network configuration parsers '''
+
 class ConfigParser:
+    """ @brief interface for all network configuration parsers """
     def parse(self):
         pass
 
 
-''' class responsible for parsing cisco network configuration into a node tree'''
 class CiscoConfigParser(ConfigParser):
+    """ @brief class responsible for parsing cisco network configuration into a node tree """
+
     nodes = []
     interfaces = []
     root = None
@@ -25,8 +27,8 @@ class CiscoConfigParser(ConfigParser):
         # --- create root node
         self.root = Node("root")
 
-    ''' parses the config file into a tree '''
     def parse(self):
+        """ @brief parses the config file into a tree """
         indent = 0
         i = iter(self.config)
         parent = self.root
@@ -50,13 +52,15 @@ class CiscoConfigParser(ConfigParser):
         return self.root
 
 
-''' class responsible for parsing juniper network configuration into a node tree'''
 class JuniperConfigParser(ConfigParser):
+    """ @brief class responsible for parsing juniper network configuration into a node tree """
+
     nodes = []
     interfaces = []
     root = None
     config = None
     COMMENT_REGEX = re.compile(".*[##]")
+
     def __init__(self, filename):
         self.filename = filename
         self.fd = open(filename, "r")
@@ -64,6 +68,7 @@ class JuniperConfigParser(ConfigParser):
         self.root = Node("root")
 
     def parse(self):
+        """ @brief parses the config file into a tree """
         i = iter(self.config)
         parent = self.root
         while True:
