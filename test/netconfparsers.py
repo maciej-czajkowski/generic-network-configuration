@@ -82,3 +82,4 @@ class JuniperConfigParser(ConfigParser):
             except StopIteration:
                 break
         return self.root
+
