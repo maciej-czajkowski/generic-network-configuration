@@ -76,9 +76,11 @@ class JuniperConfigParser(ConfigParser):
                     parent = parent.parent
                     continue
                 if line.endswith("{"):
-                    parent = parent.children[-1]
                     line = line.rstrip(" {")
-                Node(line, parent=parent)
+                    Node(line, parent=parent)
+                    parent = parent.children[-1]
+                else:
+                    Node(line, parent=parent)
             except StopIteration:
                 break
         return self.root
