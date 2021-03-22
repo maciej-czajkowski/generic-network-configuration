@@ -1,14 +1,9 @@
 from netconfparsers import CiscoConfigParser
 from translators import *
-
+from ConfigGenerator import ciscoGenerator
 from anytree import RenderTree, AsciiStyle
 from anytree.exporter import JsonExporter
 
-config = CiscoConfigParser("ciscoexample.txt")
-root = config.parse()
-
-# print(RenderTree(root, style=AsciiStyle()).by_attr())
-exporter = JsonExporter(indent=4)
 
 trans = Cisco2GenericTranslator(root)
 trans.translate()
