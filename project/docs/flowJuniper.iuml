@@ -1,7 +1,7 @@
 @startuml Juniper Flow
 
-node generic as "Generic configuration JSON"
-node juniper_tree as "Juniper configuration Node Tree"
+node generic as "Generic Configuration JSON"
+node juniper_tree as "Juniper Configuration Node Tree"
 node juniper as "Juniper Configuration"
 
 

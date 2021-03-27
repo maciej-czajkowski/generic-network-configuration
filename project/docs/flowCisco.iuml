@@ -1,18 +1,12 @@
 @startuml Cisco Flow
 
-node cisco as "Cisco configuration"
-node generic as "Generic configuration JSON"
-node cisco_tree as "Cisco configuration Node Tree"
-' node juniper_tree as "Juniper configuration Node Tree"
-' node juniper as "Juniper Configuration"
+node cisco as "Cisco Configuration"
+node generic as "Generic Configuration JSON"
+node cisco_tree as "Cisco Configuration Node Tree"
 
 cisco -> cisco_tree : CiscoConfigParser
 cisco_tree <-> generic : CiscoConfigTranslator using CiscoDict
-' cisco_tree -> generic : CiscoConfigTranslator using CiscoDict
 
 cisco_tree -> cisco : CiscoConfigGenerator
-' generic -> cisco_tree: CiscoConfigTranslater using CiscoDict
-' generic -> juniper_tree : JuniperConfigTranslator using JuniperDict
-' juniper_tree -> juniper : JuniperConfigGenerator
 
 @enduml
