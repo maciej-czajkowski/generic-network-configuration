@@ -1,0 +1,29 @@
+!
+hostname retail
+!
+
+username jsomeone password 0 cg6#107X
+!
+
+interface FastEthernet0
+ no ip address
+!
+interface FastEthernet1
+ no ip address
+!
+interface FastEthernet2
+ no ip address
+!
+interface FastEthernet3
+ switchport mode trunk
+ no ip address
+!
+interface FastEthernet4
+ ip address 192.168.12.2 255.255.255.0
+ no ip directed-broadcast (default)
+ speed auto
+ ip nat outside
+ ip access-group 103 in
+ no cdp enable
+ crypto ipsec client ezvpn ezvpnclient outside
+ crypto map static-map

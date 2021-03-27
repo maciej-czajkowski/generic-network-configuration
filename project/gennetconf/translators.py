@@ -4,7 +4,7 @@ import json
 
 class Translator:
     """@brief Translator interface"""
-    def translate(self):
+    def __translate(self):
         pass
 
 
@@ -14,14 +14,15 @@ class Cisco2GenericTranslator(Translator):
     INTERFACE_FASTETHERNET_PREFIX = "interface FastEthernet"
 
     def __init__(self, root):
-        self.root = root
-        self.cisco_dict = CiscoDict()
-        self.config = {}
+        self.__root = root
+        self.__cisco_dict = CiscoDict()
+        self.__config = {}
+        self.__translate()
 
-    def translate(self):
+    def __translate(self):
         interfaces = {}
-        for node in self.root.children:
-            for key, callback in self.cisco_dict.cisco_dict.items():
+        for node in self.__root.children:
+            for key, callback in self.__cisco_dict.cisco_dict.items():
                 if node.name.startswith(key):
                     pair = callback(node)
                     if pair:
@@ -29,36 +30,42 @@ class Cisco2GenericTranslator(Translator):
                             self.add_json_entry(pair.left, pair.right)
                         if pair.type == "interface":
                             interfaces[pair.left] = pair.right
-        self.config[self.cisco_dict.GENERIC_INTERFACES_SECTION] = {}
-        self.add_json_entry(self.cisco_dict.GENERIC_INTERFACES_SECTION, interfaces)
-        return self.config
+        self.__config[self.__cisco_dict.GENERIC_INTERFACES_SECTION] = {}
+        self.add_json_entry(self.__cisco_dict.GENERIC_INTERFACES_SECTION, interfaces)
+
+    def get_config(self):
+        return self.__config
 
     def get_json(self, indent):
-        return json.dumps(self.config, indent=indent)
+        return json.dumps(self.__config, indent=indent)
 
     def add_json_entry(self, key, value):
-        self.config[key] = value
+        self.__config[key] = value
 
 
 class Generic2JuniperTranslator(Translator):
     """ @brief class for translating generic json config into juniper tree """
     def __init__(self, generic_config):
-        self.generic_config = json.loads(generic_config)
+        self.__generic_config = json.loads(generic_config)
 
         # --- generate main nodes
-        self.root = Node("root")
+        self.__root = Node("root")
         main_sections = [ "system", "interfaces", "protocols", "security", "vlans"]
         for section in main_sections:
-            Node(section, parent=self.root)
+            Node(section, parent=self.__root)
 
         # --- create proper dictionary object
-        self.dict = JuniperDict(self.root)
+        self.__dict = JuniperDict(self.__root)
+        self.__translate()
 
-    def translate(self):
-        for key, value in self.generic_config.items():
-            if key in self.dict.generic_juniper:
-                self.dict.generic_juniper.get(key)(value)
-        return self.root
+    def __translate(self):
+        for key, value in self.__generic_config.items():
+            if key in self.__dict.generic_juniper:
+                self.__dict.generic_juniper.get(key)(value)
+        return self.__root
+
+    def get_root(self):
+        return self.__root
 
 
 
