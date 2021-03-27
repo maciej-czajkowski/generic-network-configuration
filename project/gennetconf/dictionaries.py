@@ -8,6 +8,7 @@ class Interfaces(Enum):
     """ @brief Enum class for interface types"""
     FASTETHERNET = 1
 
+
 class Pair:
     """ @brief Simple C++ like Pair implementation with added type field for general usage"""
     def __init__(self, left, right, type=None):
@@ -54,16 +55,12 @@ class CiscoDict(GenericDict):
     INTERFACE_PREFIX = "interface "
 
     def __init__(self):
-        self.cisco_dict = {
-                          self.HOSTNAME           : self.generic_callback,
-                          self.UNCRYPTED_PASSWORD : self.generic_callback,
-                          self.INTERFACE_PREFIX   : self.interface_callback,
-                         }
+        self.cisco_dict = {self.HOSTNAME           : self.generic_callback,
+                           self.UNCRYPTED_PASSWORD : self.generic_callback,
+                           self.INTERFACE_PREFIX   : self.interface_callback,}
 
-        self.cisco2generic_dict = {
-                                   self.HOSTNAME           : self.GENERIC_HOSTNAME,
-                                   self.UNCRYPTED_PASSWORD : self.GENERIC_UNCRYPTED_PASSWORD,
-                                  }
+        self.cisco2generic_dict = {self.HOSTNAME           : self.GENERIC_HOSTNAME,
+                                   self.UNCRYPTED_PASSWORD : self.GENERIC_UNCRYPTED_PASSWORD,}
 
     def generic_callback(self, node):
         """ @brief callback for translating simple cisco key - value pairs to generic format
@@ -115,7 +112,6 @@ class CiscoDict(GenericDict):
         # add here more parse rules
 
         return Pair(node.name, result, type="interface")
-            # return Pair(node.name, result)
 
     def check_cisco_interface_type(self, string):
         """  @brief checks string for interface type
@@ -134,20 +130,18 @@ class JuniperDict(GenericDict):
     ENCRYPTED_PASSWORD = "encrypted password"
 
     def __init__(self, root):
-        self.root = root
-        self.generic_juniper = {
-                               self.GENERIC_HOSTNAME           : self.hostname_callback,
-                               self.GENERIC_UNCRYPTED_PASSWORD : self.uncrypted_password_callback,
-                               self.GENERIC_INTERFACES_SECTION : self.interfaces_callback,
-                               }
+        self.__root = root
+        self.generic_juniper = {self.GENERIC_HOSTNAME           : self.hostname_callback,
+                                self.GENERIC_UNCRYPTED_PASSWORD : self.uncrypted_password_callback,
+                                self.GENERIC_INTERFACES_SECTION : self.interfaces_callback,}
 
     def hostname_callback(self, value):
         """ @brief callback for translating generic hostname value into juniper configuration
             generates juniper hostname node
             @ node     - parsed fest ethernet interface node
             @ returns  - juniper hostname node"""
-        system = find(self.root, filter_=lambda node : node.name == "system")
-        node = Node(self.HOSTNAME + " " + value + self.LINE_END, parent=system)
+        system = find(self.__root, filter_=lambda node : node.name == "system")
+        node = Node(self.HOSTNAME + " " + value, parent=system)
         return node
 
     def uncrypted_password_callback(self, value):
@@ -155,11 +149,11 @@ class JuniperDict(GenericDict):
             generates juniper uncrypted password node
             @ node     - parsed fest ethernet interface node
             @ returns  - juniper uncrypted password node"""
-        system = find(self.root, filter_=lambda node : node.name == "system")
+        system = find(self.__root, filter_=lambda node : node.name == "system")
         root_authentication = find(system, filter_=lambda node : node.name == "root-authentication")
         if root_authentication is None:
             root_authentication = Node("root_authentication", parent=system)
-        node = Node(self.ENCRYPTED_PASSWORD + " " + value + self.LINE_END, parent=root_authentication)
+        node = Node(self.ENCRYPTED_PASSWORD + " " + value, parent=root_authentication)
         return node
 
     def interfaces_callback(self, dict):
@@ -182,14 +176,14 @@ class JuniperDict(GenericDict):
             @ key     - interface name in generic json
             @ values  - interface values dict in generic json"""
         # -- tempory we change fast to giga/0/0 <- don't know what those two 0 mean
-        interfaces = find(self.root, filter_=lambda node : node.name == self.GENERIC_INTERFACES_SECTION)
+        interfaces = find(self.__root, filter_=lambda node : node.name == self.GENERIC_INTERFACES_SECTION)
         interface_name = self.GIGAETHERNET_PREFIX + key.lstrip(self.GENERIC_FASTETHERNET_INTERFACE)
         main = Node(interface_name, parent=interfaces)
         unit_0 = Node("unit 0", parent=main)
         family_inet = Node("family inet", parent=unit_0)
         if values[self.IP_ADDRESS]:
             ip_address_value = "address" + " " + values[self.IP_ADDRESS]  + "/" \
-                             + IPAddress(values[self.SUBNET]).netmask_bits().__str__() + self.LINE_END
+                             + IPAddress(values[self.SUBNET]).netmask_bits().__str__()
             ip_address = Node(ip_address_value, parent=family_inet)
 
 
