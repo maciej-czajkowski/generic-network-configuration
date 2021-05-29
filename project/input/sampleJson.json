@@ -1,0 +1,13 @@
+{
+    "hostname" : "nazwa hosta",
+    "interfaces" : [{
+        "gigaethernet1" : {
+            "ip address" : "100.100.100.100",
+            "subnet" : "255.255.255.255"
+        },
+        "gigaethernet2" : {
+            "ip address" : "200.200.200.200",
+            "subnet" : "255.255.0.0"
+        }
+    }]
+}
