@@ -1,0 +1,21 @@
+{% extends'base.html' %}
+
+{% block content %}
+  <form method="POST" action="/index" enctype="multipart/form-data">
+      <p><input type="file" name="file"></p>
+      <p><input type="submit" value="Submit"></p>
+    </form>
+{#    <p></p>#}
+    <form method="GET" action="/index" enctype="multipart/form-data">
+        <p><input name="filename" id="username" required></p>
+        <label><input type="radio" name="input" value="inputCisco">iCisco</label>
+        <label><input type="radio" name="input" value="inputJuniper">iJuniper</label>
+        <label><input type="radio" name="input" value="inputJSON">iJSON</label>
+        <label><input type="radio" name="output" value="outputCisco">oCisco</label>
+        <label><input type="radio" name="output" value="outputJuniper">oJuniper</label>
+        <label><input type="radio" name="output" value="outputJSON">oJSON</label>
+        <p><button type="submit">do magic</button></p>
+    </form>
+
+
+{% endblock %}

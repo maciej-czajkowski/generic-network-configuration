@@ -1,4 +1,10 @@
 import os
+# Bring your packages onto the path
+import sys, os
+# sys.path.append(os.path.abspath("os.path.join('..', 'config'")))
+
+# Now do your import
+# from config.config import *
 
 from flask import Flask
 
@@ -31,8 +37,8 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    from . import hello
-    app.register_blueprint(hello.bp)
+    from . import index
+    app.register_blueprint(index.bp)
     app.add_url_rule('/', endpoint='index')
 
     return app
