@@ -14,7 +14,9 @@ from GNCapp.db import get_db
 bp = Blueprint('hello', __name__)
 app = Flask(__name__)
 # change it to reusable relative path
-app.config['UPLOAD_FOLDER'] = "static\\uploads\\"
+app.config['UPLOAD_FOLDER'] = "GNCapp\\static\\uploads\\"
+app.config['DOWNLOAD_FOLDER'] = "static\\uploads\\"
+
 
 
 
@@ -54,39 +56,43 @@ def index():
             if request.args.get('filename'):
                 outputFilename = ""
                 error = None
-                if request.args.get('input') == 'inputCisco':
-                    if request.args.get('output') == 'outputJSON':
-                        ciscoToJSON(file_name)
-                        outputFilename = file_name + ".json"
-                    elif request.args.get('output') == 'outputJuniper':
-                        ciscoToJuniper(file_name)
-                        outputFilename = file_name + ".txt"
-                    else:
-                        error = 'There is no point in translating Cisco to Cisco'
-                        print('cisco to cisco translating')
-                elif request.args.get('input') == 'inputJuniper':
-                    if request.args.get('output') == 'outputCisco':
-                        juniperToCisco(file_name)
-                        outputFilename = file_name + ".txt"
-                    elif request.args.get('output') == 'outputJSON':
-                        juniperToJSON(file_name)
-                        outputFilename = file_name + ".json"
-                    else:
-                        error = 'There is no point in translating Juniper to Juniper'
-                        print('juniper to juniper translating')
-                elif request.args.get('input') == 'inputJSON':
-                    if request.args.get('output') == 'outputCisco':
-                        JSONToCisco(file_name)
-                        outputFilename = file_name + ".txt"
-                    elif request.args.get('output') == 'outputJuniper':
-                        JSONToJuniper(file_name)
-                        outputFilename = file_name + ".txt"
-                    else:
-                        error = 'There is no point in translating JSON to JSON'
-                        print('json to json translating')
+                db = get_db()
+                if db.execute('SELECT file_id FROM user_files WHERE owner_id = ? and file_full_name = ?', (str(session['user_id']), file_name)).fetchone() is None:
+                    error = "You don't have file with name " + file_name
+                else:
+                    if request.args.get('input') == 'inputCisco':
+                        if request.args.get('output') == 'outputJSON':
+                            ciscoToJSON(file_name)
+                            outputFilename = file_name + ".json"
+                        elif request.args.get('output') == 'outputJuniper':
+                            ciscoToJuniper(file_name)
+                            outputFilename = file_name + ".txt"
+                        else:
+                            error = 'There is no point in translating Cisco to Cisco'
+                            print('cisco to cisco translating')
+                    elif request.args.get('input') == 'inputJuniper':
+                        if request.args.get('output') == 'outputCisco':
+                            juniperToCisco(file_name)
+                            outputFilename = file_name + ".txt"
+                        elif request.args.get('output') == 'outputJSON':
+                            juniperToJSON(file_name)
+                            outputFilename = file_name + ".json"
+                        else:
+                            error = 'There is no point in translating Juniper to Juniper'
+                            print('juniper to juniper translating')
+                    elif request.args.get('input') == 'inputJSON':
+                        if request.args.get('output') == 'outputCisco':
+                            JSONToCisco(file_name)
+                            outputFilename = file_name + ".txt"
+                        elif request.args.get('output') == 'outputJuniper':
+                            JSONToJuniper(file_name)
+                            outputFilename = file_name + ".txt"
+                        else:
+                            error = 'There is no point in translating JSON to JSON'
+                            print('json to json translating')
                 if error is None:
                     try:
-                        return send_from_directory(app.config["UPLOAD_FOLDER"], filename=outputFilename, as_attachment=True)
+                        return send_from_directory(app.config["DOWNLOAD_FOLDER"], filename=outputFilename, as_attachment=True)
                     except FileNotFoundError:
                         print("File not found")
                         abort(404)
@@ -102,6 +108,6 @@ def index():
 @bp.route("/get-file/<file_name>")
 def get_file(file_name):
     try:
-        return send_from_directory(app.config["UPLOAD_FOLDER"], filename=file_name, as_attachment=True)
+        return send_from_directory(app.config["DOWNLOAD_FOLDER"], filename=file_name, as_attachment=True)
     except FileNotFoundError:
         abort(404)
