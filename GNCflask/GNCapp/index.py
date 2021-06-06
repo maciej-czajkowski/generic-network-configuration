@@ -14,7 +14,8 @@ from GNCapp.db import get_db
 bp = Blueprint('hello', __name__)
 app = Flask(__name__)
 # change it to reusable relative path
-app.config['UPLOAD_FOLDER'] = "GNCapp/static/uploads/"  #
+app.config['UPLOAD_FOLDER'] = "static\\uploads\\"
+
 
 
 # just redirect to index
