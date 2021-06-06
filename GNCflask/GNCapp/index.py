@@ -14,8 +14,9 @@ from GNCapp.db import get_db
 bp = Blueprint('hello', __name__)
 app = Flask(__name__)
 #change it to reusable relative path
-app.config['UPLOAD_FOLDER'] ="D:\\STUDIA\\INFORMATYKA\\SEMESTR 6\\Projekt " \
-                             "kompetencyjny\\generic-network-configuration\\GNCflask\\GNCapp\\static\\uploads" #
+app.config['UPLOAD_FOLDER'] ="C:\\Users\\Lukas\\Desktop\\Projekt Kompetencyjny\\generic-network-configuration\\GNCflask\\GNCapp\\static\\uploads"
+    #"D:\\STUDIA\\INFORMATYKA\\SEMESTR 6\\Projekt " \
+     #                        "kompetencyjny\\generic-network-configuration\\GNCflask\\GNCapp\\static\\uploads" #
 
 #just redirect to index
 @bp.route('/')

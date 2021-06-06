@@ -1,21 +1,75 @@
-{% extends'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-  <form method="POST" action="/index" enctype="multipart/form-data">
-      <p><input type="file" name="file"></p>
-      <p><input type="submit" value="Submit"></p>
-    </form>
-{#    <p></p>#}
-    <form method="GET" action="/index" enctype="multipart/form-data">
-        <p><input name="filename" id="username" required></p>
-        <label><input type="radio" name="input" value="inputCisco">iCisco</label>
-        <label><input type="radio" name="input" value="inputJuniper">iJuniper</label>
-        <label><input type="radio" name="input" value="inputJSON">iJSON</label>
-        <label><input type="radio" name="output" value="outputCisco">oCisco</label>
-        <label><input type="radio" name="output" value="outputJuniper">oJuniper</label>
-        <label><input type="radio" name="output" value="outputJSON">oJSON</label>
-        <p><button type="submit">do magic</button></p>
-    </form>
-
+<div class="container ">
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-4 border">
+                <h5 class="mt-3">Upload file to server:</h5>
+                <form method="POST" action="/index" enctype="multipart/form-data">
+                    <div class="custom-file mt-3">
+                        <input type="file" class="custom-file-input" id="customFile" name="file">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                    <!--<input class="custom-file-input" type="file" id="customFile" name="file">-->
+                    <input class="btn mt-3" type="submit" value="Send"> <!-- Tu było w value Submit -->
+                </form>
+                {# <p></p>#}
+                <h5 class="mt-3">Translator:</h5>
+                <form method="GET" action="/index" enctype="multipart/form-data">
+                    <input class="form-control mt-3" name="filename" id="username" required>
+                    <small class="form-text text-muted mb-2">Write name of file you want to translate.</small>
+                    <div class="row">
+                        <div class="col-md-6 ">
+                            <h5>From:</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="input" value="inputCisco"
+                                       id="inputCisco">
+                                <label class="form-check-label" for="inputCisco">Cisco</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="input" value="inputJuniper"
+                                       id="inputJuniper">
+                                <label class="form-check-label" for="inputJuniper">Juniper</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="input" value="inputJSON"
+                                       id="inputJSON">
+                                <label class="form-check-label" for="inputJSON">JSON</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>To:</h5>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="output" value="outputCisco"
+                                       id="outputCisco">
+                                <label class="form-check-label" for="outputCisco">Cisco</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="output" value="outputJuniper"
+                                       id="outputJuniper">
+                                <label class="form-check-label" for="outputJuniper">Juniper</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="output" value="outputJSON"
+                                       id="outputJSON">
+                                <label class="form-check-label" for="outputJSON">JSON</label>
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        <button class="btn mt-3" type="submit">Translate</button>
+                    </p>
+                </form>
+            </div>
+            <div class="col-md-4">
+            </div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
