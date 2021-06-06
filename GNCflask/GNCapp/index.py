@@ -13,13 +13,15 @@ from GNCapp.db import get_db
 
 bp = Blueprint('hello', __name__)
 app = Flask(__name__)
-#change it to reusable relative path
-app.config['UPLOAD_FOLDER'] ="GNCapp/static/uploads/" #
+# change it to reusable relative path
+app.config['UPLOAD_FOLDER'] = "GNCapp/static/uploads/"  #
 
-#just redirect to index
+
+# just redirect to index
 @bp.route('/')
 def redirect_to_index():
     return redirect('/index')
+
 
 @bp.route('/index', methods=["GET", "POST"])
 def index():
@@ -36,7 +38,7 @@ def index():
             db.commit()
             print('file saved')
             return redirect(request.url)
-        #add usage of db
+        # add usage of db
     if request.method == "GET":
         print("GETT")
         req = request.args
@@ -89,11 +91,10 @@ def index():
     return render_template('index.html')
 
 
-#download with direct link
+# download with direct link
 @bp.route("/get-file/<file_name>")
 def get_file(file_name):
     try:
-        return send_from_directory(app.config["UPLOAD_FOLDER"],filename=file_name, as_attachment=True)
+        return send_from_directory(app.config["UPLOAD_FOLDER"], filename=file_name, as_attachment=True)
     except FileNotFoundError:
         abort(404)
-

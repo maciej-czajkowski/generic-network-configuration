@@ -14,9 +14,9 @@
 <div class="container">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
             </div>
-            <div class="col-md-8 bg-info text-white border">
+            <div class="col-md-8 bg-info text-white">
                 <nav>
                     <div class="row">
                         <div class="col-md-6">
@@ -26,7 +26,8 @@
                             <ul class="list-inline d-flex justify-content-end">
                                 {% if g.user %}
                                 <li class="list-inline-item"><span>{{ g.user['username'] }}</span></li>
-                                <li class="list-inline-item"><a class="text-white" href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                                <li class="list-inline-item"><a class="text-white" href="{{ url_for('auth.logout') }}">Log
+                                    Out</a></li>
                                 {% else %}
                                 <li class="list-inline-item"><a class="text-white"
                                                                 href="{{ url_for('auth.register') }}">Register</a></li>
@@ -38,18 +39,33 @@
                     </div>
                 </nav>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
             </div>
         </div>
     </div>
-
 </div>
 <section class="content">
     <header>
         {% block header %}{% endblock %}
     </header>
     {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8 bg-warning text-white">
+                    <div class="row">
+                        <div class="flash">{{ message }}</div>
+                    </div>
+                </div>
+                </nav>
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+    </div>
+    </div>
     {% endfor %}
     {% block content %}{% endblock %}
 </section>
