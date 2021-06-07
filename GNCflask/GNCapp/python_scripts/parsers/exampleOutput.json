@@ -1,0 +1,34 @@
+{
+    "hostname": " retail",
+    "enable password": " cisco123",
+    "interface FastEthernet2": {
+        "test": "value"
+    },
+    "interface FastEthernet3": {
+        "test": "value"
+    },
+    "interface FastEthernet4": {
+        "test": "value"
+    },
+    "interface FastEthernet5": {
+        "test": "value"
+    },
+    "interface FastEthernet6": {
+        "test": "value"
+    },
+    "interface FastEthernet7": {
+        "test": "value"
+    },
+    "interface FastEthernet8": {
+        "test": "value"
+    },
+    "interface FastEthernet9": {
+        "test": "value"
+    },
+    "interface FastEthernet0": {
+        "test": "value"
+    },
+    "interface FastEthernet1": {
+        "test": "value"
+    }
+}
