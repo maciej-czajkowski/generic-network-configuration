@@ -13,8 +13,13 @@
                         <input type="file" class="custom-file-input" id="customFile" name="file">
                         <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                    <!--<input class="custom-file-input" type="file" id="customFile" name="file">-->
-                    <input class="btn mt-3" type="submit" value="Send"> <!-- Tu było w value Submit -->
+                    <script>
+                    $(".custom-file-input").on("change", function() {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                    });
+                    </script>
+                    <input class="btn btn-light btn-outline-secondary mt-3" type="submit" value="Send">
                 </form>
                 {# <p></p>#}
                 <h5 class="mt-3">Translator:</h5>
@@ -60,7 +65,7 @@
                         </div>
                     </div>
                     <p>
-                        <button class="btn mt-3" type="submit">Translate</button>
+                        <button class="btn btn-light btn-outline-secondary mt-3" type="submit">Translate</button>
                     </p>
                 </form>
             </div>
