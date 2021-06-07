@@ -2,12 +2,9 @@ import json
 import re
 from anytree import PreOrderIter, Node
 import nanolog as nl
+from .mainlog import logger
 
-logger = nl.Logger.create_logger(
-    'main',
-    stream='out',
-    level='debug',
-)
+
 
 class BaseParser:
     # tree - input tree
